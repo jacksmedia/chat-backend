@@ -21,22 +21,17 @@ app.post('/chat', async (req, res) => {
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4",  // Use the model you prefer
             messages: [{ role: "user", content: prompt }],
         });
 
         const botReply = response.choices[0].message.content;
         res.json({ reply: botReply });
     } catch (error) {
+        console.error('Error in OpenAI API call:', error);
         res.status(500).json({ error: 'Error communicating with the bot' });
     }
 });
 
-// Start server (for local testing)
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(port, () => {
-        console.log(`Server running at http://localhost:${port}`);
-    });
-}
 
 module.exports = app;
