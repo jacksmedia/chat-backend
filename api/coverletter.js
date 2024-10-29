@@ -1,4 +1,11 @@
-// coverLetter.js
+const express = require('express');
+const cors = require('cors');
+const OpenAI = require('openai');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
 const keywords = {
   technologies: ["Python", "JavaScript", "AWS", "Docker", "Node.js"],
   methodologies: ["ChatGPT", "Agile", "SCRUM", "TDD", "CI/CD"],
@@ -16,7 +23,7 @@ function extractKeywords(text) {
 }
 
 // Main handler function for Vercel API
-export default async (req, res) => {
+app.post('/coverletter', async (req, res) => {
   if (req.method === "POST") {
       const { job_description, boilerplate } = req.body;
 
@@ -45,4 +52,6 @@ export default async (req, res) => {
       res.setHeader("Allow", ["POST"]);
       res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-};
+});
+
+module.exports = app;
